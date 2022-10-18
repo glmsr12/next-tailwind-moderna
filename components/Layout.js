@@ -1,5 +1,5 @@
-import Link from 'next/Link';
 import Head from 'next/head';
+import Link from 'next/link';
 import React from 'react';
 
 export default function Layout({ title, children }) {
@@ -13,23 +13,23 @@ export default function Layout({ title, children }) {
 
       <div className="flex min-h-screen flex-col justify-between">
         <header>
-          <nav className="flex h-16 item-center px-4 justify-between shadow-md bg-yellow-600">
+          <nav className="flex h-20 item-center px-4 justify-between shadow-md bg-blue-500">
             <Link href="/">
-              <a className="text-lg font-bold">Moderna Furniture</a>
+              <a className="text-xl text-white font-bold">Moderna Furniture</a>
             </Link>
             <div>
               <Link href="/cart">
-                <a className="p-2">Cart</a>
+                <a className="p-2 text-white">Cart</a>
               </Link>
               <Link href="/login">
-                <a className="p-2">Login</a>
+                <a className="p-2 text-white">Login</a>
               </Link>
             </div>
           </nav>
         </header>
         <main className="container m-auto mt-4 px-4">{children}</main>
-        <footer className="flex h-20 justify-center items-center shadow-inner bg-yellow-600">
-          <p className="font-sans text-xs font-bold">
+        <footer className="flex h-20 justify-center items-center shadow-inner bg-blue-500">
+          <p className="font-sans text-xs font-bold text-white">
             Copyright © 2022 Moderna Furniture
           </p>
         </footer>
