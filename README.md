@@ -24,3 +24,4 @@ description
 -show product info in second column
 -show add to cart action on third column
 -add style
+8.Activate Add to cart function

@@ -9,6 +9,7 @@ const data = {
       brand: 'Moderna',
       rating: 4.5,
       numReviews: 8,
+      countInStock: 20,
     },
     {
       name: 'Upholstered Sofa',
@@ -19,6 +20,7 @@ const data = {
       brand: 'Silverline',
       rating: 4.7,
       numReviews: 14,
+      countInStock: 10,
     },
     {
       name: 'Modern Accent Chair',
@@ -29,6 +31,7 @@ const data = {
       brand: 'Moderna',
       rating: 4.6,
       numReviews: 29,
+      countInStock: 20,
     },
     {
       name: 'Accent Chair Sets',
@@ -39,6 +42,7 @@ const data = {
       brand: 'Dreamboat',
       rating: 4.0,
       numReviews: 80,
+      countInStock: 4,
     },
     {
       name: 'Dark Brown Accent Chair',
@@ -49,6 +53,7 @@ const data = {
       brand: 'Moderna',
       rating: 4.8,
       numReviews: 6,
+      countInStock: 25,
     },
     {
       name: 'Colorful Accent Chair',
@@ -59,6 +64,7 @@ const data = {
       brand: 'Moderna',
       rating: 4.2,
       numReviews: 12,
+      countInStock: 8,
     },
     {
       name: 'Contemporary Modern Orange Sofa',
@@ -69,6 +75,7 @@ const data = {
       brand: 'Moderna',
       rating: 5.0,
       numReviews: 1,
+      countInStock: 10,
     },
     {
       name: 'Green Leather Accent Chair 37.5',
@@ -79,6 +86,7 @@ const data = {
       brand: 'Moderna',
       rating: 4.0,
       numReviews: 29,
+      countInStock: 29,
     },
   ],
 };
