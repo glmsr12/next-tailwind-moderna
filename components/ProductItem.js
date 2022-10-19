@@ -22,7 +22,10 @@ export default function ProductItem({ product }) {
         </Link>
         <p className="mb-2">{product.brand}</p>
         <p>${product.price}</p>
-        <button className="primary-button" type="button">
+        <button
+          className="bg-yellow-400 px-6 py-3.5  rounded-lg "
+          type="button"
+        >
           Add to Cart
         </button>
       </div>

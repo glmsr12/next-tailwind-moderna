@@ -15,7 +15,9 @@ export default function Layout({ title, children }) {
         <header>
           <nav className="flex h-20 item-center px-4 justify-between shadow-md bg-blue-500">
             <Link href="/">
-              <a className="text-xl text-white font-bold">Moderna Furniture</a>
+              <a className="text-xl mt-6 text-white font-bold">
+                Moderna Furniture
+              </a>
             </Link>
             <div>
               <Link href="/cart">
