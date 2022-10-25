@@ -1,10 +1,15 @@
 import { createContext, useReducer } from 'react';
+import Cookies from 'js-cookie';
 
 export const Store = createContext();
 
 //setting default item as empty cart
+//ask cart if the cookies exist if it is ask json to convert to the js.
+//if there is no cookie use default value for cart items
 const initialState = {
-  cart: { cartItems: [] },
+  cart: Cookies.get('cart')
+    ? JSON.parse(Cookies.get('cart'))
+    : { cartItems: [] },
 };
 
 //adding new item to the cart
@@ -23,6 +28,8 @@ function reducer(state, action) {
           )
         : // update the cart item by quantity if it is exist
           [...state.cart.cartItems, newItem];
+
+      Cookies.set('cart', JSON.stringify({ ...state.cart, cartItems }));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
     // remove added item from cart.js
@@ -30,6 +37,7 @@ function reducer(state, action) {
       const cartItems = state.cart.cartItems.filter(
         (item) => item.slug !== action.payload.slug
       );
+      Cookies.set('cart', JSON.stringify({ ...state.cart, cartItems }));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
 

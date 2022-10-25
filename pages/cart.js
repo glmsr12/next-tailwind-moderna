@@ -5,8 +5,9 @@ import { XCircleIcon } from '@heroicons/react/outline';
 import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
-export default function CartScreen() {
+function CartScreen() {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const {
@@ -15,6 +16,12 @@ export default function CartScreen() {
 
   const removeItemHandler = (item) => {
     dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
+
+  //Quantity selection in the cart
+  const updateCartHandler = (item, qty) => {
+    const quantity = Number(qty);
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
   };
 
   return (
@@ -53,6 +60,22 @@ export default function CartScreen() {
                         </a>
                       </Link>
                     </td>
+
+                    <td className="p-5 text-center">
+                      <select
+                        value={item.quantity}
+                        onChange={(e) =>
+                          updateCartHandler(item, e.target.value)
+                        }
+                      >
+                        {[...Array(item.countInStock).keys()].map((x) => (
+                          <option key={x + 1} value={x + 1}>
+                            {x + 1}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+
                     <td className="p-5 text-right">{item.quantity}</td>
                     <td className="p-5 text-right">{item.price}</td>
                     <td className="p-5 text-right">{item.quantity}</td>
@@ -69,7 +92,7 @@ export default function CartScreen() {
           <div className="card p-5">
             <ul>
               <li>
-                <div className="pb-3 text-xl">
+                <div className="pb-3 text-xl text-center">
                   Subtotal({cartItems.reduce((a, c) => a + c.quantity, 0)}) : $
                   {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
                 </div>
@@ -77,7 +100,7 @@ export default function CartScreen() {
               <li>
                 <button
                   onClick={() => router.push('/shipping')}
-                  className="bg-yellow-400 "
+                  className="bg-yellow-400 px-6 py-3  rounded-lg w-full"
                 >
                   Check Out
                 </button>
@@ -89,3 +112,7 @@ export default function CartScreen() {
     </Layout>
   );
 }
+
+// export dynamic page that is only rendering in client side
+
+export default dynamic(() => Promise.resolve(CartScreen), { ssr: false });
