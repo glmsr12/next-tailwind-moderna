@@ -77,7 +77,7 @@ export default function CartScreen() {
               <li>
                 <button
                   onClick={() => router.push('/shipping')}
-                  className="bg-yellow-400s "
+                  className="bg-yellow-400 "
                 >
                   Check Out
                 </button>
