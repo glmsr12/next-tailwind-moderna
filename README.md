@@ -25,3 +25,7 @@ description
 -show add to cart action on third column
 -add style
 8.Activate Add to cart function
+9.Create Cart Page
+-create cart js
+-use context to get cart items
+-redirect to cart screen after add to cart
