@@ -30,6 +30,11 @@ description
 -use context to get cart items
 -redirect to cart screen after add to cart 10. Handle Changing 10.10.Cart Items
 -add select box for quantity
--handle select box change 11. Save Cart Items
+-handle select box change
+11 Save Cart Items
 -Install js-cookie package
 -save and retrieve cart items in cookies
+12 Create a logging form
+-intstall react hook form
+-create input boxes
+-add login button
