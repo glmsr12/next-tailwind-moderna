@@ -1,4 +1,8 @@
+import bcryptjs from 'bcryptjs';
 import NextAuth from 'next-auth/next';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import User from '../../../models/User';
+import db from '../../../utils/db';
 
 export default NextAuth({
   session: {
@@ -16,4 +20,29 @@ export default NextAuth({
       return session;
     },
   },
+
+  // connection to the database(MongoDB) to get the user info
+  providers: [
+    CredentialsProvider({
+      async authorize(credentials) {
+        await db.connect();
+        const user = await User.findOne({
+          email: credentials.email,
+        });
+        //look up if the credentials the users entered correct
+        await db.disconnect();
+        if (user && bcryptjs.compareSync(credentials.password, user.password)) {
+          return {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            image: 'f',
+            isAdmin: user.isAdmin,
+          };
+        }
+        //if it is not correct return error message
+        throw new Error('Invalid email or password');
+      },
+    }),
+  ],
 });
