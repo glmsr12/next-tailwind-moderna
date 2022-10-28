@@ -34,13 +34,18 @@ description
 11 Save Cart Items
 -Install js-cookie package
 -save and retrieve cart items in cookies
-12 Create a logging form
+12.Create a logging form
 -intstall react hook form
 -create input boxes
 -add login button
-13 Connect To MongoDB
+13.Connect To MongoDB
 -install mongoose
 -install monodb or use mongodb atlas
 -save connection url in .env file
 -create db utils file
 -create sample users
+14.Create Logging Api
+-install next-auth
+-create nextauth.js
+-implement sign in
+-use signing in login form
