@@ -1,3 +1,7 @@
+import bcryptjs from 'bcryptjs';
+import User from '../../../models/User';
+import db from '../../../utils/db';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import NextAuth from 'next-auth/next';
 
 export default NextAuth({
@@ -16,4 +20,26 @@ export default NextAuth({
       return session;
     },
   },
+  //Mangodb base auth
+  providers: [
+    CredentialsProvider({
+      async authorize(credentials) {
+        await db.connect();
+        const user = await User.findOne({
+          email: credentials.email,
+        });
+        await db.disconnect();
+        if (user && bcryptjs.compareSync(credentials.password, user.password)) {
+          return {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            image: 'f',
+            isAdmin: user.isAdmin,
+          };
+        }
+        throw new Error('Invalid email or password');
+      },
+    }),
+  ],
 });

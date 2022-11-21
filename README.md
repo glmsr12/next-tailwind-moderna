@@ -44,8 +44,12 @@ description
 -save connection url in .env file
 -create db utils file
 -create sample users
-14.Create Logging Api
+14.Create Login Api
 -install next-auth
 -create nextauth.js
 -implement sign in
 -use signing in login form
+15 Add user Menu
+-check user authentication
+-install headlessui
+-show user menu
