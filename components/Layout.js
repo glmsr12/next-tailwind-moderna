@@ -10,7 +10,7 @@ export default function Layout({ title, children }) {
   const [cartItemsCount, setCartItemsCount] = useState(0);
   useEffect(() => {
     setCartItemsCount(cart.cartItems.reduce((a, c) => a + c.quantity, 0));
-  }, []);
+  }, [cart.cartItems]);
   return (
     <>
       <Head>
