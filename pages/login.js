@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
@@ -7,13 +8,10 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
 export default function LoginScreen() {
-  //login screen
   const { data: session } = useSession();
 
   const router = useRouter();
   const { redirect } = router.query;
-
-  //after user login redirect user to the homepage or redirect page on query string
 
   useEffect(() => {
     if (session?.user) {
@@ -26,7 +24,6 @@ export default function LoginScreen() {
     register,
     formState: { errors },
   } = useForm();
-
   const submitHandler = async ({ email, password }) => {
     try {
       const result = await signIn('credentials', {
@@ -37,11 +34,10 @@ export default function LoginScreen() {
       if (result.error) {
         toast.error(result.error);
       }
-    } catch (error) {
-      toast.error(getError(error));
+    } catch (err) {
+      toast.error(getError(err));
     }
   };
-
   return (
     <Layout title="Login">
       <form
@@ -74,10 +70,7 @@ export default function LoginScreen() {
             type="password"
             {...register('password', {
               required: 'Please enter password',
-              minLength: {
-                value: 6,
-                message: 'Please enter at least 6 characters!',
-              },
+              minLength: { value: 6, message: 'password is more than 5 chars' },
             })}
             className="w-full"
             id="password"
@@ -89,6 +82,10 @@ export default function LoginScreen() {
         </div>
         <div className="mb-4 ">
           <button className="primary-button">Login</button>
+        </div>
+        <div className="mb-4 ">
+          Do not have an account?
+          <Link href={`/register?redirect=${redirect || '/'}`}>Register</Link>
         </div>
       </form>
     </Layout>
