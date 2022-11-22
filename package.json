@@ -19,11 +19,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.38.0",
-<<<<<<< HEAD
     "react-toastify": "^9.0.8"
-=======
-    "react-toastify": "^9.1.1"
->>>>>>> b2419482b9c07c51cf4b2d99960ee3a872d8af42
   },
   "devDependencies": {
     "autoprefixer": "^10.4.12",
