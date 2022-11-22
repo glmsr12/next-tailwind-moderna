@@ -3,11 +3,10 @@ import Head from 'next/head';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
-<<<<<<< HEAD
-=======
+
+
 import { Menu } from '@headlessui/react';
 import 'react-toastify/dist/ReactTostify.css';
->>>>>>> b2419482b9c07c51cf4b2d99960ee3a872d8af42
 import { Store } from '../utils/Store';
 import DropdownLink from './DropdownLink';
 
