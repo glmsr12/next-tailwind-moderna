@@ -40,12 +40,16 @@ description
 -add login button
 13.Connect To MongoDB
 -install mongoose
--install monodb or use mongodb atlas
+-install mongodb or use mongodb atlas
 -save connection url in .env file
 -create db utils file
 -create sample users
-14.Create Logging Api
+14.Create Login Api
 -install next-auth
 -create nextauth.js
 -implement sign in
 -use signing in login form
+15 Add user Menu
+-check user authentication
+-install headlessui
+-show user menu
