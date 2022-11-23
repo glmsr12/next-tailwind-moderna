@@ -1,4 +1,5 @@
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
@@ -11,12 +12,18 @@ import DropdownLink from './DropdownLink';
 export default function Layout({ title, children }) {
   const { status, data: session } = useSession();
 
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const [cartItemsCount, setCartItemsCount] = useState(0);
   useEffect(() => {
     setCartItemsCount(cart.cartItems.reduce((a, c) => a + c.quantity, 0));
   }, [cart.cartItems]);
+
+  const logoutClickHandler = () => {
+    Cookies.remove('cart');
+    dispatch({ type: 'CART_RESET' });
+    signOut({ callbackUrl: '/login' });
+  };
   return (
     <>
       <Head>
@@ -30,7 +37,7 @@ export default function Layout({ title, children }) {
 
       <div className="flex min-h-screen flex-col justify-between">
         <header>
-          <nav className="flex h-20 item-center px-4 justify-between shadow-md bg-blue-500">
+          <nav className="flex h-20 item-center px-4 justify-between shadow-md bg-purple-600">
             <Link href="/">
               <a className="text-xl mt-6 text-white font-bold">
                 Moderna Furniture
@@ -58,10 +65,27 @@ export default function Layout({ title, children }) {
                   <Menu.Button className="text-black-600">
                     {session.user.name}
                   </Menu.Button>
-                  <Menu.Items className="absolute right-0 w-56 origin-top-right shadow-lg">
+                  <Menu.Items className="absolute right-0 w-56 origin-top-right bg-white shadow-lg">
                     <Menu.Item>
                       <DropdownLink className="dropdown-link" href="/profile">
                         Profile
+                      </DropdownLink>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <DropdownLink
+                        className="dropdown-link"
+                        href="/order-history"
+                      >
+                        Order History
+                      </DropdownLink>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <DropdownLink
+                        className="dropdown-link"
+                        href="#"
+                        onClick={logoutClickHandler}
+                      >
+                        Logout
                       </DropdownLink>
                     </Menu.Item>
                   </Menu.Items>
@@ -75,7 +99,7 @@ export default function Layout({ title, children }) {
           </nav>
         </header>
         <main className="container m-auto mt-4 px-4">{children}</main>
-        <footer className="flex h-20 justify-center items-center shadow-inner bg-blue-500">
+        <footer className="flex h-20 justify-center items-center shadow-inner bg-purple-600">
           <p className="font-sans text-xs font-bold text-white">
             Copyright © 2022 Moderna Furniture
           </p>

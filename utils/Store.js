@@ -40,7 +40,16 @@ function reducer(state, action) {
       Cookies.set('cart', JSON.stringify({ ...state.cart, cartItems }));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
-
+    // reset cart (after implementing onclick function layout.js)
+    case 'CART_RESET':
+      return {
+        ...state,
+        cart: {
+          cartItems: [],
+          shippingAdress: { location: {} },
+          paymentMethod: '',
+        },
+      };
     default:
       return state;
   }

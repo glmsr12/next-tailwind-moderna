@@ -23,7 +23,7 @@ export default function ProductItem({ product }) {
         <p className="mb-2">{product.brand}</p>
         <p>${product.price}</p>
         <button
-          className="bg-yellow-400 px-6 py-3.5  rounded-lg "
+          className="bg-purple-300 px-6 py-3.5  rounded-lg "
           type="button"
         >
           Add to Cart
