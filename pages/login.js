@@ -64,6 +64,22 @@ export default function LoginScreen() {
             <div className="text-red-500">{errors.email.message}</div>
           )}
         </div>
+        <div className="mb-4">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            {...register('password', {
+              required: 'Please enter password',
+              minLength: { value: 6, message: 'password is more than 5 chars' },
+            })}
+            className="w-full"
+            id="password"
+            autoFocus
+          ></input>
+          {errors.password && (
+            <div className="text-red-500 ">{errors.password.message}</div>
+          )}
+        </div>
         <div className="mb-4 ">
           <button className="primary-button">Login</button>
         </div>
