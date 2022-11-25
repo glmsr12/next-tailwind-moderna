@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-export default function ProductItem({ product }) {
+export default function ProductItem({ product, addToCartHandler }) {
   return (
     <div className="card">
       <Link href={`/product/${product.slug}`}>
@@ -25,6 +25,7 @@ export default function ProductItem({ product }) {
         <button
           className="bg-purple-300 px-6 py-3.5  rounded-lg "
           type="button"
+          onClick={() => addToCartHandler(product)}
         >
           Add to Cart
         </button>

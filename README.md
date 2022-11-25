@@ -63,3 +63,7 @@ description
 -insert sample producst to mongodb
 -load producst from db in hom eand product screnn
 -check product counr in stock in add to cart
+19 Load Products MongoDB
+-load producst in home page from mongodb
+-load product in product page from mongodb
+-use product api to check count in stock in add to cart
