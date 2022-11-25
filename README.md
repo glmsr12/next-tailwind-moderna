@@ -56,3 +56,6 @@ description
 16 Create Shipping Screen
 -display address fields
 -save adress in context
+17 Creete Payment Method
+-display payment methods
+-save payment method in context

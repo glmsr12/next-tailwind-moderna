@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
+import Router from 'next/router';
 import React, { useContext, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { appendErrors, useForm } from 'react-hook-form';
 import CheckoutWizard from '../components/CheckoutWizard';
 import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
@@ -42,6 +43,8 @@ export default function shippingScreen() {
         },
       })
     );
+
+    Router.push('/payment');
   };
   return (
     <Layout title="Shipping Address">
@@ -61,8 +64,8 @@ export default function shippingScreen() {
               required: 'Please enter full name',
             })}
           />
-          {Error.fullName && (
-            <div className="text-red-500">{Error.fullName.message}</div>
+          {appendErrors.fullName && (
+            <div className="text-red-500">{appendErrors.fullName.message}</div>
           )}
         </div>
         <div className="mb-4">
@@ -72,12 +75,12 @@ export default function shippingScreen() {
             id="address"
             autoFocus
             {...register('address', {
-              required: 'Please enter Adress',
+              required: 'Please enter Address',
               minLength: { value: 3, message: 'Address is more than 2 chars' },
             })}
           />
-          {Error.address && (
-            <div className="text-red-500">{Error.address.message}</div>
+          {appendErrors.address && (
+            <div className="text-red-500">{appendErrors.address.message}</div>
           )}
         </div>
         <div className="mb-4">
@@ -89,8 +92,8 @@ export default function shippingScreen() {
               required: 'Please enter city',
             })}
           />
-          {Error.city && (
-            <div className="text-red-500">{Error.city.message}</div>
+          {appendErrors.city && (
+            <div className="text-red-500">{appendErrors.city.message}</div>
           )}
         </div>
         <div className="mb-4">
@@ -102,8 +105,8 @@ export default function shippingScreen() {
               required: 'Please enter country',
             })}
           />
-          {Error.country && (
-            <div className="text-red-500">{Error.country.message}</div>
+          {appendErrors.country && (
+            <div className="text-red-500">{appendErrors.country.message}</div>
           )}
         </div>
         <div className="mb-4">
@@ -115,8 +118,10 @@ export default function shippingScreen() {
               required: 'Please enter Postal Code',
             })}
           />
-          {Error.postalCode && (
-            <div className="text-red-500">{Error.postalCode.message}</div>
+          {appendErrors.postalCode && (
+            <div className="text-red-500">
+              {appendErrors.postalCode.message}
+            </div>
           )}
         </div>
         <div className="mb-4 flex justify-between">
