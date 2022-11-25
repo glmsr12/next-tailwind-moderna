@@ -59,3 +59,7 @@ description
 17 Creete Payment Method
 -display payment methods
 -save payment method in context
+18 Seed sample products
+-insert sample producst to mongodb
+-load producst from db in hom eand product screnn
+-check product counr in stock in add to cart
