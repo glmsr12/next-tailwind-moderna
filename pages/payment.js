@@ -9,7 +9,7 @@ import { Store } from '../utils/Store';
 function PaymentScreen() {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
 
-  const { state, dispacth } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const { shippingAddress, paymentMethod } = cart;
 
@@ -19,11 +19,11 @@ function PaymentScreen() {
     {
       /* prevent losing the entered info by refreshing the page*/
     }
-    e.prefentDefault();
+    e.preventDefault();
     if (!selectedPaymentMethod) {
       return toast.error('Payment method is required');
     }
-    dispacth({ type: 'SAVE_PAYMENT_METHOD', payload: selectedPaymentMethod });
+    dispatch({ type: 'SAVE_PAYMENT_METHOD', payload: selectedPaymentMethod });
     Cookies.set(
       'cart',
       JSON.stringify({
@@ -80,3 +80,5 @@ function PaymentScreen() {
 }
 
 export default PaymentScreen;
+
+PaymentScreen.auth = true;
