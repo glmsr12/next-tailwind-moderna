@@ -5,7 +5,7 @@ import Order from '../../../models/Order';
 const handler = async (req, res) => {
   const session = await getSession({ req });
   if (!session) {
-    return res.status(401).sen('signin required');
+    return res.status(401).send('signin required');
   }
 
   const { user } = session;

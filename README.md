@@ -72,3 +72,7 @@ description
 -display payment method
 -display order items
 -create order page
+21 Create Order Screen
+-implement backend api for order details
+-load order data from backend
+-display order details
