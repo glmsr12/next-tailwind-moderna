@@ -23,7 +23,7 @@ export default function PlaceOrderScreen() {
   ); // math rounded / line copied from cart.js
 
   const shippingPrice = itemsPrice > 2000 ? 0 : 60;
-  const taxPrice = round2(itemsPrice * 0.15);
+  const taxPrice = round2(itemsPrice * 15);
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
 
   const router = useRouter();
