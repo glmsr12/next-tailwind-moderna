@@ -215,7 +215,7 @@ function OrderScreen() {
                 </thead>
                 <tbody>
                   {orderItems.map((item) => (
-                    <tr key={item._id} className="border-b">
+                    <tr key={item} className="border-b">
                       <td>
                         <Link href={`/products/${item._id}`}>
                           <a className="flex items-center">

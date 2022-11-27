@@ -76,3 +76,7 @@ description
 -implement backend api for order details
 -load order data from backend
 -display order details
+22 Register Screen
+-add signup api
+-create register page
+-call api on form submit
