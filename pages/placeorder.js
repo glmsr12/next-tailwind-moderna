@@ -16,13 +16,13 @@ export default function PlaceOrderScreen() {
   const { cart } = state;
   const { cartItems, shippingAddress, paymentMethod } = cart;
 
-  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+  const round2 = (num) => Math.round(num * 1000 + Number.EPSILON) / 1000;
 
   const itemsPrice = round2(
     cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
   ); // math rounded / line copied from cart.js
 
-  const shippingPrice = itemsPrice > 200 ? 0 : 15;
+  const shippingPrice = itemsPrice > 2000 ? 0 : 60;
   const taxPrice = round2(itemsPrice * 0.15);
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
 
