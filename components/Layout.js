@@ -27,7 +27,7 @@ import {
 import MenuIcon from '@mui/styles';
 import CancelIcon from '@mui/material';
 import SearchIcon from '@mui/material';
-import useStyles from '../utils/styles';
+import useStyles from '../utils/classes';
 import { Store } from '../utils/Store';
 import { getError } from '../utils/error';
 import Cookies from 'js-cookie';
