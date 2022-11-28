@@ -1,31 +1,58 @@
-import { makeStyles } from '@mui/styles';
+const classes = {
+  // common classes
+  flex: {
+    display: 'flex',
+  },
+  hidden: {
+    display: 'none',
+  },
+  visible: {
+    display: 'initial',
+  },
+  sort: {
+    marginRight: 1,
+  },
+  fullHeight: { height: '100v' },
+  fullWidth: {
+    witdh: '100%',
+  },
 
-const useStyles = makeStyles(() => ({
-  navbar: {
+  // Header
+
+  appbar: {
     backgroundColor: '#203040',
     '& a': {
       color: '#ffffff',
       marginLeft: 10,
     },
+
+    toolbar: {
+      justifyContent: 'space-between',
+    },
+
+    brand: {
+      fontWeight: 'bold',
+      fontSize: '1.5rem',
+    },
+    grow: {
+      flexGrow: 1,
+    },
   },
-  brand: {
-    fontWeight: 'bold',
-    fontSize: '1.5rem',
-  },
-  grow: {
-    flexGrow: 1,
-  },
+
+  // Layout Section
   main: {
+    marginTop: 2,
     minHeight: '80vh',
   },
   footer: {
-    marginTop: 10,
+    marginTop: 1,
     textAlign: 'center',
   },
   section: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 1,
+    marginBottom: 1,
   },
+
   form: {
     width: '100%',
     maxWidth: 800,
@@ -41,9 +68,17 @@ const useStyles = makeStyles(() => ({
   error: {
     color: '#f04040',
   },
-  fullWidth: {
-    width: '100%',
+
+  //map section
+
+  mapInputBox: {
+    position: 'absolute',
+    display: 'flex',
+    width: 250,
   },
+
+  // review section
+
   reviewForm: {
     maxWidth: 800,
     width: '100%',
@@ -53,31 +88,37 @@ const useStyles = makeStyles(() => ({
     borderRight: '1px #808080 solid',
     paddingRight: '1rem',
   },
-  toolbar: {
-    justifyContent: 'space-between',
-  },
+
+  // menu
+
   menuButton: { padding: 0 },
   mt1: { marginTop: '1rem' },
-  // search
-  /*
-  searchSection: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },},*/
+
+  // Search Bar
 
   searchForm: {
     border: '1px solid #ffffff',
     backgroundColor: '#ffffff',
-    borderRadius: 5,
+    borderRadius: 1,
   },
   searchInput: {
-    paddingLeft: 5,
+    paddingLeft: 1,
     color: '#000000',
     '& ::placeholder': {
       color: '#606060',
     },
   },
+
+  searchButton: {
+    backgroundColor: '#f8c040',
+    paddingLeft: 5,
+    paddingRight: 1,
+    borderRadius: '0 5px 5px 0',
+    '& span': {
+      color: '#000000',
+    },
+  },
+
   iconButton: {
     backgroundColor: '#f8c040',
     padding: 5,
@@ -86,22 +127,5 @@ const useStyles = makeStyles(() => ({
       color: '#000000',
     },
   },
-  sort: {
-    marginRight: 5,
-  },
-
-  fullContainer: { height: '100vh' },
-  mapInputBox: {
-    position: 'absolute',
-    display: 'flex',
-    left: 0,
-    right: 0,
-    margin: '10px auto',
-    width: 300,
-    height: 40,
-    '& input': {
-      width: 250,
-    },
-  },
-}));
-export default useStyles;
+};
+export default classes;

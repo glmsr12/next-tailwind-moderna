@@ -25,15 +25,15 @@ import {
   InputBase,
 } from '@mui/material';
 import MenuIcon from '@mui/styles';
-import CancelIcon from '@mui/material/styles';
-import SearchIcon from '@mui/material/styles';
+import CancelIcon from '@mui/material';
+import SearchIcon from '@mui/material';
 import useStyles from '../utils/styles';
-
 import { Store } from '../utils/Store';
 import { getError } from '../utils/error';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import { useEffect } from 'react';
 
@@ -75,13 +75,14 @@ export default function Layout({ title, description, children }) {
   };
 
   const [categories, setCategories] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   const fetchCategories = async () => {
     try {
       const { data } = await axios.get(`/api/products/categories`);
       setCategories(data);
     } catch (err) {
-      getError(err), { variant: 'error' };
+      enqueueSnackbar(getError(err), { variant: 'error' });
     }
   };
 
