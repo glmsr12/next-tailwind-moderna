@@ -21,7 +21,7 @@ const data = {
   products: [
     {
       name: 'Modern Design Dining Set',
-      slug: 'modern-dining-set',
+      slug: 'modern-design-dining-set',
       category: 'kitchen',
       image: '/images/banner1.jpg',
       isFeatured: true,
@@ -48,7 +48,7 @@ const data = {
 
     {
       name: 'Elegant Design Living Room',
-      slug: 'modern-living-room',
+      slug: 'elegant-design-living-room',
       category: 'Living Room',
       image: '/images/banner3.jpg',
       isFeatured: true,

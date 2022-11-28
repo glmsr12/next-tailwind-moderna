@@ -57,7 +57,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
   },
   menuButton: { padding: 0 },
-  mt1: { marginTop: '1rem' },
+  mt1: { marginTop: '1rem', width: 400, height: 200 },
   // search
   /*
   searchSection: {
