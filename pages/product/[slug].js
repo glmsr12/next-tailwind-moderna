@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Rating } from '@mui/material';
-import { Typography, ListItem } from '@mui/material';
+import { Typography } from '@mui/material';
 import Layout from '../../components/Layout';
 import Product from '../../models/Product';
 import db from '../../utils/db';
@@ -56,12 +56,12 @@ export default function ProductScreen(props) {
             </li>
             <li>Category: {product.category}</li>
             <li>Brand: {product.brand}</li>
-            <ListItem>
+            <li>
               <Rating value={product.rating} readOnly></Rating>
               <Link href="#reviews">
                 <Typography>({product.numReviews} reviews)</Typography>
               </Link>
-            </ListItem>
+            </li>
           </ul>
         </div>
         <div>
