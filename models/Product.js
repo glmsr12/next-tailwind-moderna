@@ -26,7 +26,7 @@ const productSchema = new mongoose.Schema(
     numReviews: { type: Number, required: true, default: 0 },
     countInStock: { type: Number, required: true, default: 0 },
     reviews: [reviewSchema],
-    feauturedImage: { type: String },
+    featuredImage: { type: String },
     isFeatured: { type: Boolean, required: true, default: false },
   },
   {
