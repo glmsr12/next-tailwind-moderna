@@ -25,18 +25,18 @@ const classes = {
       color: '#ffffff',
       marginLeft: 10,
     },
+  },
 
-    toolbar: {
-      justifyContent: 'space-between',
-    },
+  toolbar: {
+    justifyContent: 'space-between',
+  },
 
-    brand: {
-      fontWeight: 'bold',
-      fontSize: '1.5rem',
-    },
-    grow: {
-      flexGrow: 1,
-    },
+  brand: {
+    fontWeight: 'bold',
+    fontSize: '1.5rem',
+  },
+  grow: {
+    flexGrow: 1,
   },
 
   // Layout Section
