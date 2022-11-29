@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import NextLink from 'next/link';
-import { Grid, Link, Typography } from '@mui/material';
+import { Grid, Link, Typography } from '@material-ui/core';
 import Layout from '../components/Layout';
 import db from '../utils/db';
 import Product from '../models/Product';
@@ -47,7 +47,7 @@ export default function Home(props) {
           </NextLink>
         ))}
       </Carousel>
-      <Typography variant="h5">Popular Products</Typography>
+      <Typography variant="h2">Popular Products</Typography>
       <Grid container spacing={3}>
         {topRatedProducts.map((product) => (
           <Grid item md={4} key={product.name}>
@@ -75,7 +75,7 @@ export async function getServerSideProps() {
     .sort({
       rating: -1,
     })
-    .limit(9);
+    .limit(6);
   await db.disconnect();
   return {
     props: {

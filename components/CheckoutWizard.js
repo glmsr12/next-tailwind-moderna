@@ -1,27 +1,16 @@
+import { Step, StepLabel, Stepper } from '@mui/material';
 import React from 'react';
 
-function CheckoutWizard({ activeStep = 0 }) {
+export default function CheckoutWizard({ activeStep = 0 }) {
   return (
-    <div className="mb-5 flex flex-wrap">
-      {['User Login', 'Shipping Address', 'Payment Method', 'Place Order'].map(
-        (step, index) => (
-          <div
-            key={step}
-            className={`flex-1 border-b-2 text-center
-          ${
-            index <= activeStep
-              ? 'border-indigo-500 text-indigo-500'
-              : 'border-gray-500 text-gray-600'
-          }
-          
-          `}
-          >
-            {step}
-          </div>
+    <Stepper activeStep={activeStep} alternativeLabel>
+      {['Login', 'Shipping Address', 'Payment Method', 'Place Order'].map(
+        (step) => (
+          <Step key={step}>
+            <StepLabel>{step}</StepLabel>
+          </Step>
         )
       )}
-    </div>
+    </Stepper>
   );
 }
-
-export default CheckoutWizard;

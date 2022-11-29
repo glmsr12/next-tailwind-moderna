@@ -1,102 +1,261 @@
-import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import NextLink from 'next/link';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Rating } from '@mui/material';
-import { Typography } from '@mui/material';
+import {
+  Grid,
+  Link,
+  List,
+  ListItem,
+  Typography,
+  Card,
+  Button,
+  TextField,
+  CircularProgress,
+} from '@material-ui/core';
+import Rating from '@material-ui/lab/Rating';
 import Layout from '../../components/Layout';
+import useStyles from '../../utils/styles';
 import Product from '../../models/Product';
 import db from '../../utils/db';
+import axios from 'axios';
 import { Store } from '../../utils/Store';
+import { getError } from '../../utils/error';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 
 export default function ProductScreen(props) {
-  const { product } = props;
-  const { state, dispatch } = useContext(Store);
   const router = useRouter();
-  if (!product) {
-    return <Layout title="Product Not Found!">Product Not Found</Layout>;
-  }
+  const { state, dispatch } = useContext(Store);
+  const { userInfo } = state;
+  const { product } = props;
+  const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
-  //add items to the cart and if it is out of stock show alert message
-  const addToCartHandler = async () => {
-    const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios(`/api/products/${product._id}`);
+  const [reviews, setReviews] = useState([]);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const [loading, setLoading] = useState(false);
 
-    if (data.countInStock < quantity) {
-      return toast.error('Sorry. Product is out of stock');
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await axios.post(
+        `/api/products/${product._id}/reviews`,
+        {
+          rating,
+          comment,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      setLoading(false);
+      enqueueSnackbar('Review submitted successfully', { variant: 'success' });
+      fetchReviews();
+    } catch (err) {
+      setLoading(false);
+      enqueueSnackbar(getError(err), { variant: 'error' });
     }
+  };
 
+  const fetchReviews = async () => {
+    try {
+      const { data } = await axios.get(`/api/products/${product._id}/reviews`);
+      setReviews(data);
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+  useEffect(() => {
+    fetchReviews();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!product) {
+    return <div>Product Not Found</div>;
+  }
+  const addToCartHandler = async () => {
+    const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    if (data.countInStock < quantity) {
+      window.alert('Sorry. Product is out of stock');
+      return;
+    }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
     router.push('/cart');
   };
 
   return (
-    <Layout title={product.name}>
-      <div className="py-2">
-        <Link href="/"> Return to products</Link>
+    <Layout title={product.name} description={product.description}>
+      <div className={classes.section}>
+        <NextLink href="/" passHref>
+          <Link>
+            <Typography>back to products</Typography>
+          </Link>
+        </NextLink>
       </div>
-      <div className="grid md:grid-cols-4 md:gap-3">
-        <div className="md:col-span-2">
+      <Grid container spacing={1}>
+        <Grid item md={6} xs={12}>
           <Image
             src={product.image}
             alt={product.name}
             width={640}
             height={640}
-            Layout="responsive"
+            layout="responsive"
           ></Image>
-        </div>
-        <div>
-          <ul>
-            <li>
-              <h1 className="text-lg">{product.name}</h1>
-            </li>
-            <li>Category: {product.category}</li>
-            <li>Brand: {product.brand}</li>
-            <li>
+        </Grid>
+        <Grid item md={3} xs={12}>
+          <List>
+            <ListItem>
+              <Typography component="h1" variant="h1">
+                {product.name}
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography>Category: {product.category}</Typography>
+            </ListItem>
+            <ListItem>
+              <Typography>Brand: {product.brand}</Typography>
+            </ListItem>
+            <ListItem>
               <Rating value={product.rating} readOnly></Rating>
               <Link href="#reviews">
                 <Typography>({product.numReviews} reviews)</Typography>
               </Link>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <div className="card p-5">
-            <div className="mb-2 flex justify-between">
-              <div>Price</div>
-              <div>${product.price}</div>
-            </div>
-            <div className="mb-2 flex justify-between">
-              <div>Status</div>
-              <div>{product.countInStock > 0 ? 'In Stock' : 'Unavailable'}</div>
-            </div>
-            <button
-              className="bg-yellow-400 w-full rounded-lg"
-              onClick={addToCartHandler}
-            >
-              Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
+            </ListItem>
+            <ListItem>
+              <Typography> Description: {product.description}</Typography>
+            </ListItem>
+          </List>
+        </Grid>
+        <Grid item md={3} xs={12}>
+          <Card>
+            <List>
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>Price</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography>${product.price}</Typography>
+                  </Grid>
+                </Grid>
+              </ListItem>
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>Status</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography>
+                      {product.countInStock > 0 ? 'In stock' : 'Unavailable'}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </ListItem>
+              <ListItem>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={addToCartHandler}
+                >
+                  Add to cart
+                </Button>
+              </ListItem>
+            </List>
+          </Card>
+        </Grid>
+      </Grid>
+      <List>
+        <ListItem>
+          <Typography name="reviews" id="reviews" variant="h2">
+            Customer Reviews
+          </Typography>
+        </ListItem>
+        {reviews.length === 0 && <ListItem>No review</ListItem>}
+        {reviews.map((review) => (
+          <ListItem key={review._id}>
+            <Grid container>
+              <Grid item className={classes.reviewItem}>
+                <Typography>
+                  <strong>{review.name}</strong>
+                </Typography>
+                <Typography>{review.createdAt.substring(0, 10)}</Typography>
+              </Grid>
+              <Grid item>
+                <Rating value={review.rating} readOnly></Rating>
+                <Typography>{review.comment}</Typography>
+              </Grid>
+            </Grid>
+          </ListItem>
+        ))}
+        <ListItem>
+          {userInfo ? (
+            <form onSubmit={submitHandler} className={classes.reviewForm}>
+              <List>
+                <ListItem>
+                  <Typography variant="h2">Leave your review</Typography>
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    multiline
+                    variant="outlined"
+                    fullWidth
+                    name="review"
+                    label="Enter comment"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                </ListItem>
+                <ListItem>
+                  <Rating
+                    name="simple-controlled"
+                    value={rating}
+                    onChange={(e) => setRating(e.target.value)}
+                  />
+                </ListItem>
+                <ListItem>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                  >
+                    Submit
+                  </Button>
+
+                  {loading && <CircularProgress></CircularProgress>}
+                </ListItem>
+              </List>
+            </form>
+          ) : (
+            <Typography variant="h2">
+              Please{' '}
+              <Link href={`/login?redirect=/product/${product.slug}`}>
+                login
+              </Link>{' '}
+              to write a review
+            </Typography>
+          )}
+        </ListItem>
+      </List>
     </Layout>
   );
 }
-/* fetch product details from mongodb / when you click a product to see details it comes from data.js after this code it will come from db */
+
 export async function getServerSideProps(context) {
   const { params } = context;
   const { slug } = params;
 
   await db.connect();
-  const product = await Product.findOne({ slug }).lean();
+  const product = await Product.findOne({ slug }, '-reviews').lean();
   await db.disconnect();
   return {
     props: {
-      product: product ? db.convertDocToObj(product) : null,
+      product: db.convertDocToObj(product),
     },
   };
 }

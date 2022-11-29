@@ -1,37 +1,25 @@
 import axios from 'axios';
-import Link from 'next/link';
-import { Bar } from 'react-chartjs-2';
-
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import NextLink from 'next/link';
+import React, { useEffect, useContext, useReducer } from 'react';
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import React, { useEffect, useReducer } from 'react';
-import Layout from '../../components/Layout';
+  CircularProgress,
+  Grid,
+  List,
+  ListItem,
+  Typography,
+  Card,
+  Button,
+  ListItemText,
+  CardContent,
+  CardActions,
+} from '@material-ui/core';
+import { Bar } from 'react-chartjs-2';
 import { getError } from '../../utils/error';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-  },
-};
+import { Store } from '../../utils/Store';
+import Layout from '../../components/Layout';
+import useStyles from '../../utils/styles';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -45,7 +33,13 @@ function reducer(state, action) {
       state;
   }
 }
-function AdminDashboardScreen() {
+
+function AdminDashboard() {
+  const { state } = useContext(Store);
+  const router = useRouter();
+  const classes = useStyles();
+  const { userInfo } = state;
+
   const [{ loading, error, summary }, dispatch] = useReducer(reducer, {
     loading: true,
     summary: { salesData: [] },
@@ -53,96 +47,160 @@ function AdminDashboardScreen() {
   });
 
   useEffect(() => {
+    if (!userInfo) {
+      router.push('/login');
+    }
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/admin/summary`);
+        const { data } = await axios.get(`/api/admin/summary`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
     };
-
     fetchData();
-  }, []);
-
-  const data = {
-    labels: summary.salesData.map((x) => x._id), // formatting the data by the month of the year
-    datasets: [
-      {
-        label: 'Sales',
-        backgroundColor: 'rgba(162, 202, 208, 1)',
-        data: summary.salesData.map((x) => x.totalSales),
-      },
-    ],
-  };
+  }, [router, userInfo]);
   return (
     <Layout title="Admin Dashboard">
-      <div className="grid lg:grid-cols-4 md:gap-6">
-        <div>
-          <ul>
-            <li>
-              <Link href="/admin/dashboard">
-                <a className="font-bold">Dashboard</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/admin/orders">Orders</Link>
-            </li>
-            <li>
-              <Link href="/admin/products">Products</Link>
-            </li>
-            <li>
-              <Link href="/admin/users">Users</Link>
-            </li>
-          </ul>
-        </div>
-        <div className="md:col-span-3">
-          <h1 className="m-8 text-blue-800 font-bold text-xl">
-            Admin Dashboard
-          </h1>
-          {loading ? (
-            <div>Loading...</div>
-          ) : error ? (
-            <div className="alert-error">{error}</div>
-          ) : (
-            <div>
-              <div className="grid grid-cols-1 md:grid-cols-4">
-                <div className="card m-3 p-2 pt-7">
-                  <p className="text-3xl">${summary.ordersPrice} </p>
-                  <p>Sales</p>
-                  <Link href="/admin/orders">View sales</Link>
-                </div>
-                <div className="card m-3 p-5">
-                  <p className="text-3xl">{summary.ordersCount} </p>
-                  <p>Orders</p>
-                  <Link href="/admin/orders">View orders</Link>
-                </div>
-                <div className="card m-3 p-5">
-                  <p className="text-3xl">{summary.productsCount} </p>
-                  <p>Products</p>
-                  <Link href="/admin/products">View products</Link>
-                </div>
-                <div className="card m-3 p-5">
-                  <p className="text-3xl">{summary.usersCount} </p>
-                  <p>Users</p>
-                  <Link href="/admin/users">View users</Link>
-                </div>
-              </div>
-              <h2 className="text-xl">Sales Report</h2>
-              <Bar
-                options={{
-                  legend: { display: true, position: 'right' },
-                }}
-                data={data}
-              />
-            </div>
-          )}
-        </div>
-      </div>
+      <Grid container spacing={1}>
+        <Grid item md={3} xs={12}>
+          <Card className={classes.section}>
+            <List>
+              <NextLink href="/admin/dashboard" passHref>
+                <ListItem selected button component="a">
+                  <ListItemText primary="Admin Dashboard"></ListItemText>
+                </ListItem>
+              </NextLink>
+              <NextLink href="/admin/orders" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="Orders"></ListItemText>
+                </ListItem>
+              </NextLink>
+              <NextLink href="/admin/products" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="Products"></ListItemText>
+                </ListItem>
+              </NextLink>
+              <NextLink href="/admin/users" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="Users"></ListItemText>
+                </ListItem>
+              </NextLink>
+            </List>
+          </Card>
+        </Grid>
+        <Grid item md={9} xs={12}>
+          <Card className={classes.section}>
+            <List>
+              <ListItem>
+                {loading ? (
+                  <CircularProgress />
+                ) : error ? (
+                  <Typography className={classes.error}>{error}</Typography>
+                ) : (
+                  <Grid container spacing={5}>
+                    <Grid item md={3}>
+                      <Card raised>
+                        <CardContent>
+                          <Typography variant="h1">
+                            ${summary.ordersPrice}
+                          </Typography>
+                          <Typography>Sales</Typography>
+                        </CardContent>
+                        <CardActions>
+                          <NextLink href="/admin/orders" passHref>
+                            <Button size="small" color="primary">
+                              View sales
+                            </Button>
+                          </NextLink>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                    <Grid item md={3}>
+                      <Card raised>
+                        <CardContent>
+                          <Typography variant="h1">
+                            {summary.ordersCount}
+                          </Typography>
+                          <Typography>Orders</Typography>
+                        </CardContent>
+                        <CardActions>
+                          <NextLink href="/admin/orders" passHref>
+                            <Button size="small" color="primary">
+                              View orders
+                            </Button>
+                          </NextLink>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                    <Grid item md={3}>
+                      <Card raised>
+                        <CardContent>
+                          <Typography variant="h1">
+                            {summary.productsCount}
+                          </Typography>
+                          <Typography>Products</Typography>
+                        </CardContent>
+                        <CardActions>
+                          <NextLink href="/admin/products" passHref>
+                            <Button size="small" color="primary">
+                              View products
+                            </Button>
+                          </NextLink>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                    <Grid item md={3}>
+                      <Card raised>
+                        <CardContent>
+                          <Typography variant="h1">
+                            {summary.usersCount}
+                          </Typography>
+                          <Typography>Users</Typography>
+                        </CardContent>
+                        <CardActions>
+                          <NextLink href="/admin/users" passHref>
+                            <Button size="small" color="primary">
+                              View users
+                            </Button>
+                          </NextLink>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                  </Grid>
+                )}
+              </ListItem>
+              <ListItem>
+                <Typography component="h1" variant="h1">
+                  Sales Chart
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Bar
+                  data={{
+                    labels: summary.salesData.map((x) => x._id),
+                    datasets: [
+                      {
+                        label: 'Sales',
+                        backgroundColor: 'rgba(162, 222, 208, 1)',
+                        data: summary.salesData.map((x) => x.totalSales),
+                      },
+                    ],
+                  }}
+                  options={{
+                    legend: { display: true, position: 'right' },
+                  }}
+                ></Bar>
+              </ListItem>
+            </List>
+          </Card>
+        </Grid>
+      </Grid>
     </Layout>
   );
 }
 
-AdminDashboardScreen.auth = { adminOnly: true };
-export default AdminDashboardScreen;
+export default dynamic(() => Promise.resolve(AdminDashboard), { ssr: false });

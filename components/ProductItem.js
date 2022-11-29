@@ -1,35 +1,42 @@
-/* eslint-disable @next/next/no-img-element */
-import Link from 'next/link';
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography,
+} from '@mui/material';
 import React from 'react';
+import NextLink from 'next/link';
+import Rating from '@mui/material/Rating';
 
 export default function ProductItem({ product, addToCartHandler }) {
   return (
-    <div className="card">
-      <Link href={`/product/${product.slug}`}>
-        <a>
-          <img
-            src={product.image}
-            alt={product.name}
-            className="rounded shadow"
-          />
-        </a>
-      </Link>
-      <div className="flex flex-col items-center justify-center p-5">
-        <Link href={`/product/${product.slug}`}>
-          <a>
-            <h2 className="text-lg">{product.name}</h2>
-          </a>
-        </Link>
-        <p className="mb-2">{product.brand}</p>
-        <p>${product.price}</p>
-        <button
-          className="bg-purple-300 px-6 py-3.5  rounded-lg "
-          type="button"
+    <Card>
+      <NextLink href={`/product/${product.slug}`} passHref>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            image={product.image}
+            title={product.name}
+          ></CardMedia>
+          <CardContent>
+            <Typography>{product.name}</Typography>
+            <Rating value={product.rating} readOnly></Rating>
+          </CardContent>
+        </CardActionArea>
+      </NextLink>
+      <CardActions>
+        <Typography>${product.price}</Typography>
+        <Button
+          size="small"
+          color="primary"
           onClick={() => addToCartHandler(product)}
         >
-          Add to Cart
-        </button>
-      </div>
-    </div>
+          Add to cart
+        </Button>
+      </CardActions>
+    </Card>
   );
 }

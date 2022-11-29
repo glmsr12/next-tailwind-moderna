@@ -20,10 +20,10 @@ const classes = {
   // Header
 
   appbar: {
-    backgroundColor: '#203040',
+    backgroundColor: '#6D9886',
     '& a': {
       color: '#ffffff',
-      marginLeft: 10,
+      marginLeft: 7,
     },
   },
 
