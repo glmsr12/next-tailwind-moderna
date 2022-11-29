@@ -1,45 +1,30 @@
 const classes = {
-  // common classes
+  //common
   flex: {
     display: 'flex',
-  },
-  hidden: {
-    display: 'none',
   },
   visible: {
     display: 'initial',
   },
+  hidden: {
+    display: 'none',
+  },
   sort: {
     marginRight: 1,
   },
-  fullHeight: { height: '100v' },
+  fullHeight: { height: '100vh' },
   fullWidth: {
-    witdh: '100%',
+    width: '100%',
   },
-
-  // Header
-
-  appbar: {
-    backgroundColor: '#6D9886',
-    '& a': {
-      color: '#ffffff',
-      marginLeft: 7,
-    },
+  error: {
+    color: '#f04040',
   },
-
-  toolbar: {
-    justifyContent: 'space-between',
+  form: {
+    width: '100%',
+    maxWidth: 800,
+    margin: '0 auto',
   },
-
-  brand: {
-    fontWeight: 'bold',
-    fontSize: '1.5rem',
-  },
-  grow: {
-    flexGrow: 1,
-  },
-
-  // Layout Section
+  //layout
   main: {
     marginTop: 2,
     minHeight: '80vh',
@@ -52,49 +37,32 @@ const classes = {
     marginTop: 1,
     marginBottom: 1,
   },
-
-  form: {
-    width: '100%',
-    maxWidth: 800,
-    margin: '0 auto',
+  // header
+  appbar: {
+    backgroundColor: '#203040',
+    '& a': {
+      color: '#ffffff',
+      marginLeft: 1,
+    },
+  },
+  toolbar: {
+    justifyContent: 'space-between',
+  },
+  brand: {
+    fontWeight: 'bold',
+    fontSize: '1.5rem',
+  },
+  grow: {
+    flexGrow: 1,
   },
   navbarButton: {
     color: '#ffffff',
     textTransform: 'initial',
   },
-  transparentBackgroud: {
-    backgroundColor: 'transparent',
-  },
-  error: {
-    color: '#f04040',
-  },
-
-  //map section
-
-  mapInputBox: {
-    position: 'absolute',
-    display: 'flex',
-    width: 250,
-  },
-
-  // review section
-
-  reviewForm: {
-    maxWidth: 800,
-    width: '100%',
-  },
-  reviewItem: {
-    marginRight: '1rem',
-    borderRight: '1px #808080 solid',
-    paddingRight: '1rem',
-  },
-
-  // menu
 
   menuButton: { padding: 0 },
-  mt1: { marginTop: '1rem' },
 
-  // Search Bar
+  // search
 
   searchForm: {
     border: '1px solid #ffffff',
@@ -108,24 +76,35 @@ const classes = {
       color: '#606060',
     },
   },
-
   searchButton: {
     backgroundColor: '#f8c040',
-    paddingLeft: 5,
-    paddingRight: 1,
+    padding: 1,
     borderRadius: '0 5px 5px 0',
     '& span': {
       color: '#000000',
     },
   },
 
-  iconButton: {
-    backgroundColor: '#f8c040',
-    padding: 5,
-    borderRadius: '0 5px 5px 0',
-    '& span': {
-      color: '#000000',
+  // review
+  reviewItem: {
+    marginRight: '1rem',
+    borderRight: '1px #808080 solid',
+    paddingRight: '1rem',
+  },
+
+  // map
+  mapInputBox: {
+    position: 'absolute',
+    display: 'flex',
+    left: 0,
+    right: 0,
+    margin: '10px auto',
+    width: 300,
+    height: 40,
+    '& input': {
+      width: 250,
     },
   },
 };
+
 export default classes;
