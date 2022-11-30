@@ -1,28 +1,43 @@
-import { PayPalScriptProvider } from '@paypal/react-paypal-js';
-import { SnackbarProvider } from 'notistack';
+import '../styles/global.css';
+import { SessionProvider, useSession } from 'next-auth/react';
 import { StoreProvider } from '../utils/Store';
-import { CacheProvider } from '@emotion/react';
-import createEmotionCache from '../utils/createEmotionCache';
+import { useRouter } from 'next/router';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
-const clientSideEmotionCache = createEmotionCache();
-
-function MyApp({ Component, props }) {
-  const emotionCache = clientSideEmotionCache,
-    pageProps = props;
-
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <CacheProvider value={emotionCache}>
-      <SnackbarProvider
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <StoreProvider>
-          <PayPalScriptProvider deferLoading={true}>
+    <SessionProvider session={session}>
+      <StoreProvider>
+        <PayPalScriptProvider deferLoading={true}>
+          {Component.auth ? (
+            <Auth adminOnly={Component.auth.adminOnly}>
+              <Component {...pageProps} />
+            </Auth>
+          ) : (
             <Component {...pageProps} />
-          </PayPalScriptProvider>
-        </StoreProvider>
-      </SnackbarProvider>
-    </CacheProvider>
+          )}
+        </PayPalScriptProvider>
+      </StoreProvider>
+    </SessionProvider>
   );
+}
+
+function Auth({ children, adminOnly }) {
+  const router = useRouter();
+  const { status, data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/unauthorized?message=login required');
+    },
+  });
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+  if (adminOnly && !session.user.isAdmin) {
+    router.push('/unauthorized?message=admin login required');
+  }
+
+  return children;
 }
 
 export default MyApp;

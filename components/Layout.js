@@ -1,306 +1,111 @@
+import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
-import { CssBaseline, ThemeProvider } from '@mui/material';
-
-import { createTheme } from '@mui/material/styles';
-
-import useMediaQuery from '@mui/material/useMediaQuery';
-import React, { useContext, useEffect, useState } from 'react';
-import MenuIcon from '@mui/icons-material/Menu';
-import CancelIcon from '@mui/icons-material/Cancel';
-import SearchIcon from '@mui/icons-material/Search';
-import classes from '../utils/classes';
-import { getError } from '../utils/error';
+import Link from 'next/link';
 import Cookies from 'js-cookie';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import NextLink from 'next/link';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Container,
-  Link,
-  Switch,
-  Badge,
-  Button,
-  Menu,
-  MenuItem,
-  Box,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  Divider,
-  ListItemText,
-  InputBase,
-} from '@mui/material';
-
+import React, { useContext, useEffect, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
+import { Menu } from '@headlessui/react';
+import 'react-toastify/dist/ReactToastify.css';
 import { Store } from '../utils/Store';
+import DropdownLink from './DropdownLink';
 
-export default function Layout({ title, description, children }) {
+export default function Layout({ title, children }) {
+  const { status, data: session } = useSession();
+
   const { state, dispatch } = useContext(Store);
-  const { darkMode, cart, userInfo } = state;
-
-  const theme = createTheme({
-    components: {
-      MuiLink: {
-        defaultProps: {
-          underline: 'hover',
-        },
-      },
-    },
-
-    typography: {
-      h1: {
-        fontSize: '1.6rem',
-        fontWeight: 400,
-        margin: '1rem 0',
-      },
-      h2: {
-        fontSize: '1.4rem',
-        fontWeight: 400,
-        margin: '1rem 0',
-      },
-    },
-    palette: {
-      mode: darkMode ? 'dark' : 'light',
-      primary: {
-        main: '#f0c000',
-      },
-      secondary: {
-        main: '#208080',
-      },
-    },
-  });
-
-  const router = useRouter();
-
-  const [sidbarVisible, setSidebarVisible] = useState(false);
-  const sidebarOpenHandler = () => {
-    setSidebarVisible(true);
-  };
-  const sidebarCloseHandler = () => {
-    setSidebarVisible(false);
-  };
-
-  const [categories, setCategories] = useState([]);
-
-  const fetchCategories = async () => {
-    try {
-      const { data } = await axios.get(`/api/products/categories`);
-      setCategories(data);
-    } catch (err) {
-      getError(err), { variant: 'error' };
-    }
-  };
-
-  const [query, setQuery] = useState('');
-  const queryChangeHandler = (e) => {
-    setQuery(e.target.value);
-  };
-  const submitHandler = (e) => {
-    e.preventDefault();
-    router.push(`/search?query=${query}`);
-  };
-
+  const { cart } = state;
+  const [cartItemsCount, setCartItemsCount] = useState(0);
   useEffect(() => {
-    fetchCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setCartItemsCount(cart.cartItems.reduce((a, c) => a + c.quantity, 0));
+  }, [cart.cartItems]);
 
-  const darkModeChangeHandler = () => {
-    dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
-    const newDarkMode = !darkMode;
-    Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF');
-  };
-  const [anchorEl, setAnchorEl] = useState(null);
-  const loginClickHandler = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
-  const loginMenuCloseHandler = (e, redirect) => {
-    setAnchorEl(null);
-    if (redirect) {
-      router.push(redirect);
-    }
-  };
   const logoutClickHandler = () => {
-    setAnchorEl(null);
-    dispatch({ type: 'USER_LOGOUT' });
-    Cookies.remove('userInfo');
-    Cookies.remove('cartItems');
-    Cookies.remove('shippinhAddress');
-    Cookies.remove('paymentMethod');
-    router.push('/');
+    Cookies.remove('cart');
+    dispatch({ type: 'CART_RESET' });
+    signOut({ callbackUrl: '/login' });
   };
-
-  const isDesktop = useMediaQuery('(min-width:600px)');
   return (
     <>
       <Head>
-        <title>
-          {title ? `${title} - Moderna Furniture` : 'Moderna Furniture'}
-        </title>
-        {description && <meta name="description" content={description}></meta>}
+        <title>{title ? title + ' - Moderna' : 'Moderna'}</title>
+        <meta name="description" content="Ecommerce Website" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AppBar position="static" sx={classes.appbar}>
-          <Toolbar sx={classes.toolbar}>
-            <Box display="flex" alignItems="center">
-              <IconButton
-                edge="start"
-                aria-label="open drawer"
-                onClick={sidebarOpenHandler}
-                sx={classes.menuButton}
-              >
-                <MenuIcon sx={classes.navbarButton} />
-              </IconButton>
-              <NextLink href="/" passHref>
-                <Link>
-                  <Typography sx={classes.brand}>Moderna Furniture</Typography>
-                </Link>
-              </NextLink>
-            </Box>
-            <Drawer
-              anchor="left"
-              open={sidbarVisible}
-              onClose={sidebarCloseHandler}
-            >
-              <List>
-                <ListItem>
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Typography>Shopping by category</Typography>
-                    <IconButton
-                      aria-label="close"
-                      onClick={sidebarCloseHandler}
-                    >
-                      <CancelIcon />
-                    </IconButton>
-                  </Box>
-                </ListItem>
-                <Divider light />
-                {categories.map((category) => (
-                  <NextLink
-                    key={category}
-                    href={`/search?category=${category}`}
-                    passHref
-                  >
-                    <ListItem
-                      button
-                      component="a"
-                      onClick={sidebarCloseHandler}
-                    >
-                      <ListItemText primary={category}></ListItemText>
-                    </ListItem>
-                  </NextLink>
-                ))}
-              </List>
-            </Drawer>
 
-            <Box sx={isDesktop ? classes.visible : classes.hidden}>
-              <form onSubmit={submitHandler}>
-                <Box sx={classes.searchForm}>
-                  <InputBase
-                    name="query"
-                    sx={classes.searchInput}
-                    placeholder="Search products"
-                    onChange={queryChangeHandler}
-                  />
-                  <IconButton
-                    type="submit"
-                    sx={classes.searchButton}
-                    aria-label="search"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </Box>
-              </form>
-            </Box>
-            <Box>
-              <Switch
-                checked={darkMode}
-                onChange={darkModeChangeHandler}
-              ></Switch>
-              <NextLink href="/cart" passHref>
-                <Link>
-                  <Typography component="span">
-                    {cart.cartItems.length > 0 ? (
-                      <Badge
-                        color="secondary"
-                        badgeContent={cart.cartItems.length}
+      <ToastContainer position="bottom-center" limit={1} />
+
+      <div className="flex min-h-screen flex-col justify-between ">
+        <header>
+          <nav className="flex h-12 items-center px-4 justify-between shadow-md">
+            <Link href="/">
+              <a className="text-lg font-bold">Moderna</a>
+            </Link>
+            <div>
+              <Link href="/cart">
+                <a className="p-2">
+                  Cart
+                  {cartItemsCount > 0 && (
+                    <span className="ml-1 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
+                      {cartItemsCount}
+                    </span>
+                  )}
+                </a>
+              </Link>
+
+              {status === 'loading' ? (
+                'Loading'
+              ) : session?.user ? (
+                <Menu as="div" className="relative inline-block">
+                  <Menu.Button className="text-blue-600">
+                    {session.user.name}
+                  </Menu.Button>
+                  <Menu.Items className="absolute right-0 w-56 origin-top-right bg-white  shadow-lg ">
+                    <Menu.Item>
+                      <DropdownLink className="dropdown-link" href="/profile">
+                        Profile
+                      </DropdownLink>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <DropdownLink
+                        className="dropdown-link"
+                        href="/order-history"
                       >
-                        Cart
-                      </Badge>
-                    ) : (
-                      'Cart'
+                        Order History
+                      </DropdownLink>
+                    </Menu.Item>
+                    {session.user.isAdmin && (
+                      <Menu.Item>
+                        <DropdownLink
+                          className="dropdown-link"
+                          href="/admin/dashboard"
+                        >
+                          Admin Dashboard
+                        </DropdownLink>
+                      </Menu.Item>
                     )}
-                  </Typography>
-                </Link>
-              </NextLink>
-              {userInfo ? (
-                <>
-                  <Button
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={loginClickHandler}
-                    sx={classes.navbarButton}
-                  >
-                    {userInfo.name}
-                  </Button>
-                  <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={loginMenuCloseHandler}
-                  >
-                    <MenuItem
-                      onClick={(e) => loginMenuCloseHandler(e, '/profile')}
-                    >
-                      Profile
-                    </MenuItem>
-                    <MenuItem
-                      onClick={(e) =>
-                        loginMenuCloseHandler(e, '/order-history')
-                      }
-                    >
-                      Order Hisotry
-                    </MenuItem>
-                    {userInfo.isAdmin && (
-                      <MenuItem
-                        onClick={(e) =>
-                          loginMenuCloseHandler(e, '/admin/dashboard')
-                        }
+                    <Menu.Item>
+                      <a
+                        className="dropdown-link"
+                        href="#"
+                        onClick={logoutClickHandler}
                       >
-                        Admin Dashboard
-                      </MenuItem>
-                    )}
-                    <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
-                  </Menu>
-                </>
+                        Logout
+                      </a>
+                    </Menu.Item>
+                  </Menu.Items>
+                </Menu>
               ) : (
-                <NextLink href="/login" passHref>
-                  <Link>
-                    <Typography component="span">Login</Typography>
-                  </Link>
-                </NextLink>
+                <Link href="/login">
+                  <a className="p-2">Login</a>
+                </Link>
               )}
-            </Box>
-          </Toolbar>
-        </AppBar>
-        <Container component="main" sx={classes.main}>
-          {children}
-        </Container>
-        <Box component="footer" sx={classes.footer}>
-          <Typography>
-            ® 2022 All rights reserved. Moderna Furniture.
-          </Typography>
-        </Box>
-      </ThemeProvider>
+            </div>
+          </nav>
+        </header>
+        <main className="container m-auto mt-4 px-4">{children}</main>
+        <footer className="flex h-10 justify-center items-center shadow-inner">
+          <p>Copyright © 2022 Moderna</p>
+        </footer>
+      </div>
     </>
   );
 }
