@@ -20,47 +20,6 @@ const data = {
 
   products: [
     {
-      name: 'Modern Design Dining Set',
-      slug: 'modern-design-dining-set',
-      category: 'kitchen',
-      image: '/images/banner1.jpg',
-      isFeatured: true,
-      featuredImage: '/images/banner1.jpg',
-      price: 7999,
-      brand: 'Moderna',
-      rating: 0,
-      numReviews: 0,
-      countInStock: 20,
-    },
-    {
-      name: 'Living Room Set',
-      slug: 'living-room-set',
-      category: 'Living Room',
-      image: '/images/banner2.jpg',
-      isFeatured: true,
-      featuredImage: '/images/banner2.jpg',
-      price: 7999,
-      brand: 'Moderna',
-      rating: 0,
-      numReviews: 0,
-      countInStock: 20,
-    },
-
-    {
-      name: 'Elegant Design Living Room',
-      slug: 'elegant-design-living-room',
-      category: 'Living Room',
-      image: '/images/banner3.jpg',
-      isFeatured: true,
-      featuredImage: '/images/banner3.jpg',
-      price: 10999,
-      brand: 'Moderna',
-      rating: 0,
-      numReviews: 0,
-      countInStock: 20,
-    },
-
-    {
       name: 'Modern Green Sofa',
       slug: 'modern-green-sofa',
       category: 'Living Room',
