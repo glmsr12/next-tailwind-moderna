@@ -286,7 +286,7 @@ export default function Layout({ title, description, children }) {
         </AppBar>
         <Container className={classes.main}>{children}</Container>
         <footer className={classes.footer}>
-          <Typography>All rights reserved. Next Amazona.</Typography>
+          <Typography>®All right reserved ™ Moderna Furniture</Typography>
         </footer>
       </ThemeProvider>
     </div>
