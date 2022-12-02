@@ -5,10 +5,12 @@ import { XCircleIcon } from '@heroicons/react/outline';
 import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 //import axios from 'axios';
 //import { toast } from 'react-toastify';
 
 function CartScreen() {
+  const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -95,7 +97,12 @@ function CartScreen() {
                 </div>
               </li>
               <li>
-                <button className="primary-button w-full">Check Out</button>
+                <button
+                  onClick={() => router.push('login?redirect=/shipping')}
+                  className="primary-button w-full"
+                >
+                  Check Out
+                </button>
               </li>
             </ul>
           </div>
