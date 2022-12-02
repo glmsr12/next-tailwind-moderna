@@ -8,12 +8,13 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
 export default function LoginScreen() {
-  const { data: session } = useSession();
+  const { data: session } = useSession(); //check login session
 
   const router = useRouter();
   const { redirect } = router.query;
 
   useEffect(() => {
+    //check login session
     if (session?.user) {
       router.push(redirect || '/');
     }
@@ -24,6 +25,8 @@ export default function LoginScreen() {
     register,
     formState: { errors },
   } = useForm();
+
+  //sign in function
   const submitHandler = async ({ email, password }) => {
     try {
       const result = await signIn('credentials', {
