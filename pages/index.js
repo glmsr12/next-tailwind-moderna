@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Layout from '../components/Layout';
 import ProductItem from '../components/ProductItem';
 import db from '../utils/db';
@@ -7,10 +8,15 @@ import { Store } from '../utils/Store';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import SwiperCore, { Autoplay } from 'swiper';
 
 export default function Home({ products }) {
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
+
+  SwiperCore.use([Autoplay]);
 
   //add to cart function from the main page
   const addToCartHandler = async (product) => {
@@ -27,6 +33,19 @@ export default function Home({ products }) {
   };
   return (
     <Layout title="Home Page">
+      <Swiper slidePerView={1} autoplay={{ delay: 3000 }}>
+        <SwiperSlide>
+          <img src="/images/banner.jpg" alt="" />
+        </SwiperSlide>
+        <SwiperSlide>
+          {' '}
+          <img src="/images/banner2.jpg" alt="" />
+        </SwiperSlide>
+        <SwiperSlide>
+          {' '}
+          <img src="/images/banner3.jpg" alt="" />
+        </SwiperSlide>
+      </Swiper>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product) => (
           <ProductItem

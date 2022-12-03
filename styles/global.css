@@ -50,3 +50,7 @@ textarea {
 span {
   color: #2b3a55;
 }
+
+.flex {
+  display: flex;
+}
