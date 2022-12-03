@@ -33,7 +33,7 @@ export default function Home({ products }) {
   };
   return (
     <Layout title="Home Page">
-      <Swiper slidePerView={1} autoplay={{ delay: 3000 }}>
+      <Swiper slideperview={1} autoplay={{ delay: 3000 }}>
         <SwiperSlide>
           <img src="/images/banner.jpg" alt="" />
         </SwiperSlide>
