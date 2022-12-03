@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useReducer } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../../../components/Layout';
 import { getError } from '../../../utils/error';
 
