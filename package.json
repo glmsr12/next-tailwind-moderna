@@ -9,8 +9,7 @@
     "lint": "next lint"
   },
   "engines": {
-    "node": "^18.11.0",
-    "npm": "8.19.3"
+    "node": "^18.11.0"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.4",
@@ -19,6 +18,7 @@
     "@mui/styles": "^5.10.16",
     "@paypal/react-paypal-js": "^7.8.1",
     "axios": "^1.2.0",
+    "npm": "8.19.3",
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.0.1",
     "cloudinary": "^1.32.0",
