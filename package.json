@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "engines": {
+    "node": "^18.11.0",
     "npm": "8.19.3"
   },
   "dependencies": {
@@ -25,7 +26,6 @@
     "mongoose": "^6.7.3",
     "next": "^12.3.4",
     "next-auth": "^4.17.0",
-    "node": "^18.11.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.0.1",
     "react-dom": "18.2.0",
