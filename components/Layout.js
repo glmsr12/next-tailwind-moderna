@@ -39,7 +39,7 @@ export default function Layout({ title, children }) {
         <header>
           <nav className="flex h-20 items-center px-4 justify-between shadow-md">
             <Link href="/">
-              <a className="font-mono text-3xl font-bold">
+              <a className="Helvetica text-4xl font-bold">
                 Moderna <span className="font-sans">Furniture</span>
               </a>
             </Link>

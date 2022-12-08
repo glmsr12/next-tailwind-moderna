@@ -1,12 +1,16 @@
+import React, { forwardRef } from 'react';
 import Link from 'next/link';
-import React from 'react';
 
-function DropdownLink(props) {
+// eslint-disable-next-line react/display-name
+const DropdownLink = forwardRef((props, ref) => {
   let { href, children, ...rest } = props;
   return (
     <Link href={href}>
-      <a {...rest}>{children}</a>
+      <a ref={ref} {...rest}>
+        {children}
+      </a>
     </Link>
   );
-}
+});
+
 export default DropdownLink;
