@@ -7,6 +7,8 @@ import { Store } from '../utils/Store';
 import { signOut, useSession } from 'next-auth/react';
 import DropdownLink from './DropdownLink';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import { SearchIcon } from '@heroicons/react/outline';
 
 export default function Layout({ title, children }) {
   const { status, data: session } = useSession(); //display login user
@@ -21,6 +23,14 @@ export default function Layout({ title, children }) {
     Cookies.remove('cart');
     dispatch({ type: 'CART_RESET' });
     signOut({ callbackUrl: '/login' });
+  };
+
+  const [query, setQuery] = useState('');
+
+  const router = useRouter();
+  const submitHandler = (e) => {
+    e.preventDefault();
+    router.push(`/search?query=${query}`);
   };
 
   return (
@@ -39,11 +49,30 @@ export default function Layout({ title, children }) {
         <header>
           <nav className="flex h-20 items-center px-4 justify-between shadow-md">
             <Link href="/">
-              <a className="Helvetica text-4xl font-bold">
-                Moderna <span className="font-sans">Furniture</span>
+              <a className="Helvetica text-3xl font-bold ">
+                Moderna{' '}
+                <span className="font-sans italic text-2xl">Furniture</span>
               </a>
             </Link>
 
+            <form
+              onSubmit={submitHandler}
+              className="mx-auto hidden w-full justify-center md:flex"
+            >
+              <input
+                onChange={(e) => setQuery(e.target.value)}
+                type="text"
+                className="rounded-tr-none rounded-br-none p-1 text-sm focus:ring-0"
+                placeholder="Search products"
+              />
+              <button
+                className="rounded rounded-tl-none rounded-bl-none bg-blur-400 p-1 text-sm dark:text-black"
+                type="submit"
+                id="button-addon2"
+              >
+                <SearchIcon className="h-5 w-5"></SearchIcon>
+              </button>
+            </form>
             <div>
               <Link href="/cart">
                 <a className="p-3 ">
