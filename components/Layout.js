@@ -49,15 +49,14 @@ export default function Layout({ title, children }) {
         <header>
           <nav className="flex h-20 items-center px-4 justify-between shadow-md">
             <Link href="/">
-              <a className="Helvetica text-3xl font-bold ">
-                Moderna{' '}
-                <span className="font-sans italic text-2xl">Furniture</span>
+              <a className="font-kanit text-4xl font-bold ">
+                Moderna <span className="font-sans text-2xl">Furniture</span>
               </a>
             </Link>
 
             <form
               onSubmit={submitHandler}
-              className="mx-auto hidden w-full justify-center md:flex"
+              className="mx-auto hidden justify-center md:flex"
             >
               <input
                 onChange={(e) => setQuery(e.target.value)}
@@ -88,7 +87,10 @@ export default function Layout({ title, children }) {
               {status === 'loading' ? (
                 'Loading'
               ) : session?.user ? (
-                <Menu as="div" className="relative inline-block">
+                <Menu
+                  as="div"
+                  className=" relative inline-block z-index: 99999"
+                >
                   <Menu.Button className="text-blue-600">
                     {session.user.name}
                   </Menu.Button>
