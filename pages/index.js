@@ -8,12 +8,15 @@ import { Store } from '../utils/Store';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import SwiperCore, { Autoplay } from 'swiper';
+import Link from 'next/link';
 
 export default function Home({ products }) {
   const { state, dispatch } = useContext(Store);
+
   const { cart } = state;
 
   SwiperCore.use([Autoplay]);
@@ -32,20 +35,25 @@ export default function Home({ products }) {
     toast.success('Product added to the cart');
   };
   return (
-    <Layout title="Home Page">
+    <Layout>
       <Swiper slideperview={1} autoplay={{ delay: 3000 }}>
         <SwiperSlide>
-          <img src="/images/banner.jpg" alt="" />
+          <Link href="/product/modern-livingroom-set">
+            <img src="/images/banner.jpg" alt="" />
+          </Link>
         </SwiperSlide>
         <SwiperSlide>
-          {' '}
-          <img src="/images/banner2.jpg" alt="" />
+          <Link href="/product/modern-livingroom2-set">
+            <img src="/images/banner2.jpg" alt="" />
+          </Link>
         </SwiperSlide>
         <SwiperSlide>
-          {' '}
-          <img src="/images/banner3.jpg" alt="" />
+          <Link href="/product/gray-sofa-set">
+            <img src="/images/banner3.jpg" alt="" />
+          </Link>
         </SwiperSlide>
       </Swiper>
+      &nbsp;
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product) => (
           <ProductItem
@@ -58,8 +66,6 @@ export default function Home({ products }) {
     </Layout>
   );
 }
-
-// fetch products from mongodb database
 
 export async function getServerSideProps() {
   await db.connect();

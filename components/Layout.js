@@ -45,7 +45,7 @@ export default function Layout({ title, children }) {
 
       <ToastContainer position="bottom-center" limit={1} />
 
-      <div className="flex min-h-screen flex-col justify-between">
+      <div className="flex min-h-screen flex-col justify-between ">
         <header>
           <nav className="flex h-20 items-center px-4 justify-between shadow-md">
             <Link href="/">
@@ -72,7 +72,7 @@ export default function Layout({ title, children }) {
                 <SearchIcon className="h-5 w-5"></SearchIcon>
               </button>
             </form>
-            <div>
+            <div className="z-50">
               <Link href="/cart">
                 <a className="p-3 ">
                   Cart
