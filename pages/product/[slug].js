@@ -25,8 +25,9 @@ import classes from '../../utils/classess';
 export default function ProductScreen(props) {
   const { product } = props;
   const { state, dispatch } = useContext(Store);
-  const router = useRouter();
   const { userInfo } = state;
+  const router = useRouter();
+
   const { enqueueSnackbar } = useSnackbar();
 
   const [reviews, setReviews] = useState([]);
@@ -99,7 +100,7 @@ export default function ProductScreen(props) {
             alt={product.name}
             width={640}
             height={640}
-            Layout="responsive"
+            layout="responsive"
           ></Image>
         </div>
         <div>
@@ -199,7 +200,7 @@ export default function ProductScreen(props) {
               </List>
             </Form>
           ) : (
-            <Typography variant="h4">
+            <Typography variant="h5">
               Please{' '}
               <Link href={`/login?redirect=/product/${product.slug}`}>
                 login
@@ -220,7 +221,7 @@ export async function getServerSideProps(context) {
   const { slug } = params;
 
   await db.connect();
-  const product = await Product.findOne({ slug }).lean();
+  const product = await Product.findOne({ slug }, '-reviews').lean();
   await db.disconnect();
   return {
     props: {

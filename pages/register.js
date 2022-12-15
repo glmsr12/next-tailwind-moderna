@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import Layout from '../components/Layout';
 import { getError } from '../utils/error';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 

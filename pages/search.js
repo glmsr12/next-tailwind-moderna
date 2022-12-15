@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../components/Layout';
 import { XCircleIcon } from '@heroicons/react/outline';
 import ProductItem from '../components/ProductItem';

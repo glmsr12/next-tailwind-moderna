@@ -8,10 +8,10 @@ import { SnackbarProvider } from 'notistack';
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
-      <StoreProvider>
-        <SnackbarProvider
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        >
+      <SnackbarProvider
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <StoreProvider>
           <PayPalScriptProvider deferLoading={true}>
             {Component.auth ? (
               <Auth adminOnly={Component.auth.adminOnly}>
@@ -21,8 +21,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
               <Component {...pageProps} />
             )}
           </PayPalScriptProvider>
-        </SnackbarProvider>
-      </StoreProvider>
+        </StoreProvider>
+      </SnackbarProvider>
     </SessionProvider>
   );
 }

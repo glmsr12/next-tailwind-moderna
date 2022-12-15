@@ -4,7 +4,7 @@ import nextConnect from 'next-connect';
 import { onError } from '../../../../utils/error';
 import db from '../../../../utils/db';
 import Product from '../../../../models/Product';
-import { NextAuth } from '../../../api/auth/[...nextauth]';
+import { isAuth } from '../../../../utils/auth';
 
 const handler = nextConnect({
   onError,
@@ -21,11 +21,11 @@ handler.get(async (req, res) => {
   }
 });
 
-handler.use(NextAuth).post(async (req, res) => {
+handler.use(isAuth).post(async (req, res) => {
   await db.connect();
   const product = await Product.findById(req.query.id);
   if (product) {
-    const existReview = product.reviews.find((x) => x.user == req.user._id);
+    const existReview = product.reviews.find((x) => x.user === req.user._id);
     if (existReview) {
       await Product.updateOne(
         { _id: req.query.id, 'reviews._id': existReview._id },
