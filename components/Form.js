@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/system';
 
 const Form = styled('form')(() => ({
   width: '100%',

@@ -10,6 +10,7 @@ const handler = nextConnect({
   onError,
 });
 
+//all the users can see reviews
 handler.get(async (req, res) => {
   db.connect();
   const product = await Product.findById(req.query.id);
@@ -21,6 +22,7 @@ handler.get(async (req, res) => {
   }
 });
 
+//auth. logged in users to create and update review
 handler.use(isAuth).post(async (req, res) => {
   await db.connect();
   const product = await Product.findById(req.query.id);

@@ -20,7 +20,7 @@ import {
 import { getError } from '../../utils/error';
 import { useSnackbar } from 'notistack';
 import Form from '../../components/Form';
-import classes from '../../utils/classess';
+import classes from '../../utils/classes';
 
 export default function ProductScreen(props) {
   const { product } = props;
@@ -68,7 +68,6 @@ export default function ProductScreen(props) {
   };
   useEffect(() => {
     fetchReviews();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!product) {
