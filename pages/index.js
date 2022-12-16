@@ -13,10 +13,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import SwiperCore, { Autoplay } from 'swiper';
 import Link from 'next/link';
+import { Grid } from '@mui/material';
 
-export default function Home({ products }) {
+export default function Home(props) {
   const { state, dispatch } = useContext(Store);
-
+  const { products } = props;
   const { cart } = state;
 
   SwiperCore.use([Autoplay]);
@@ -54,26 +55,26 @@ export default function Home({ products }) {
         </SwiperSlide>
       </Swiper>
       &nbsp;
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <h2>Popular Products</h2>
+      <Grid container spacing={3}>
         {products.map((product) => (
-          <ProductItem
-            product={product}
-            key={product.slug}
-            addToCartHandler={addToCartHandler}
-          ></ProductItem>
+          <Grid item md={4} key={product.name}>
+            <ProductItem
+              product={product}
+              addToCartHandler={addToCartHandler}
+            />
+          </Grid>
         ))}
-      </div>
+      </Grid>
     </Layout>
   );
 }
-
 export async function getServerSideProps() {
   await db.connect();
-  const products = await Product.find().lean();
-  const featuredProducts = await Product.find({ isFeatured: true }).lean();
+  const products = await Product.find({}).lean();
+  await db.disconnect();
   return {
     props: {
-      featuredProducts: featuredProducts.map(db.convertDocToObj),
       products: products.map(db.convertDocToObj),
     },
   };
