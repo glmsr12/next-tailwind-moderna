@@ -3,26 +3,21 @@ import { SessionProvider, useSession } from 'next-auth/react';
 import { StoreProvider } from '../utils/Store';
 import { useRouter } from 'next/router';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
-import { SnackbarProvider } from 'notistack';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
-      <SnackbarProvider
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <StoreProvider>
-          <PayPalScriptProvider deferLoading={true}>
-            {Component.auth ? (
-              <Auth adminOnly={Component.auth.adminOnly}>
-                <Component {...pageProps} />
-              </Auth>
-            ) : (
+      <StoreProvider>
+        <PayPalScriptProvider deferLoading={true}>
+          {Component.auth ? (
+            <Auth adminOnly={Component.auth.adminOnly}>
               <Component {...pageProps} />
-            )}
-          </PayPalScriptProvider>
-        </StoreProvider>
-      </SnackbarProvider>
+            </Auth>
+          ) : (
+            <Component {...pageProps} />
+          )}
+        </PayPalScriptProvider>
+      </StoreProvider>
     </SessionProvider>
   );
 }
