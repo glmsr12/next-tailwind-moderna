@@ -53,6 +53,7 @@ $ Open http://localhost:3000
 
 
 ## Screenshots
+![moderna-furniture](https://user-images.githubusercontent.com/91402082/209490247-65a70b86-a717-4179-9262-044aa833cec3.png)
 
 ![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
